@@ -1,0 +1,48 @@
+{
+  "name": "vr-analytics-platform",
+  "version": "1.0.0",
+  "description": "Real-time analytics for virtual reality experiences",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "webpack serve --mode development --open",
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint src/ --ext .js",
+    "lint:fix": "eslint src/ --ext .js --fix",
+    "start": "node server/server.js",
+    "clean": "rm -rf dist/"
+  },
+  "keywords": [
+    "vr",
+    "analytics",
+    "webxr",
+    "three.js",
+    "data-visualization"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.22.0",
+    "@babel/preset-env": "^7.22.0",
+    "babel-loader": "^9.1.0",
+    "css-loader": "^6.8.0",
+    "express": "^4.18.0",
+    "file-loader": "^6.2.0",
+    "socket.io": "^4.7.0",
+    "style-loader": "^3.3.0",
+    "three": "^0.157.0",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.0",
+    "webpack-dev-server": "^4.15.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^8.44.0",
+    "eslint": "^8.44.0",
+    "jest": "^29.6.0",
+    "jest-canvas-mock": "^2.5.2",
+    "jest-environment-jsdom": "^29.7.0",
+    "nodemon": "^3.0.0"
+  }
+}

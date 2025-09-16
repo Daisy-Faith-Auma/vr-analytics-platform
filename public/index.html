@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VR Analytics Platform</title>
+    <meta name="description" content="Real-time analytics for virtual reality experiences">
+    
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content="VR Analytics Platform">
+    <meta property="og:description" content="Real-time analytics for virtual reality experiences">
+    <meta property="og:type" content="website">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1000;
+        }
+        
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        #fps-counter {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #fff;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <div class="spinner"></div>
+        <p>Loading VR Analytics Platform...</p>
+    </div>
+    
+    <div id="info">
+        <h3>VR Analytics Platform</h3>
+        <p>🎯 Click and drag to look around</p>
+        <p>🥽 Click "Enter VR" for immersive mode</p>
+        <p>📊 Analytics tracking active</p>
+    </div>
+    
+    <div id="fps-counter">FPS: --</div>
+    
+    <script src="bundle.js"></script>
+</body>
+</html>
