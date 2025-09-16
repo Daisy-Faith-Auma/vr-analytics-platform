@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VR Analytics Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .test-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #4a90e2;
+            z-index: 1000;
+        }
+        .test-button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .test-button:hover {
+            background: #357abd;
+        }
+        #analytics-output {
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <div class="spinner"></div>
+        <p>Loading VR Analytics Test Environment...</p>
+    </div>
+    
+    <div id="info">
+        <h3>VR Analytics Test Environment</h3>
+        <p>🎯 Click on the colorful data visualization bars</p>
+        <p>🖱️ Drag to look around, WASD to move</p>
+        <p>📊 Check the analytics panel for real-time data</p>
+    </div>
+    
+    <div id="fps-counter">FPS: --</div>
+    
+    <div class="test-panel">
+        <h4>Analytics Test Panel</h4>
+        <button class="test-button" onclick="testAnalytics()">Generate Test Events</button>
+        <button class="test-button" onclick="showSessionSummary()">Show Session Summary</button>
+        <button class="test-button" onclick="exportAnalyticsData()">Export Analytics Data</button>
+        <button class="test-button" onclick="showRecommendations()">Get Recommendations</button>
+        <button class="test-button" onclick="clearAnalytics()">Clear Analytics</button>
+        <div id="analytics-output"></div>
+    </div>
+
+    <script src="bundle.js"></script>
+    
+    <script>
+        // Test functions for analytics
+        function testAnalytics() {
+            if (window.vrPlatform && window.vrPlatform.analyticsCollector) {
+                const analytics = window.vrPlatform.analyticsCollector;
+                
+                // Generate test events
+                analytics.logEvent('test_event', { testData: 'sample' });
+                analytics.logInteraction('test_click', 'test_button', { x: 100, y: 100, z: 0 });
+                analytics.logEvent('user_action', { action: 'analytics_test_triggered' });
+                
+                updateOutput('✅ Test events generated successfully');
+            } else {
+                updateOutput('❌ Analytics collector not available');
+            }
+        }
+        
+        function showSessionSummary() {
+            if (window.vrPlatform && window.vrPlatform.analyticsCollector) {
+                const summary = window.vrPlatform.analyticsCollector.getSessionSummary();
+                const engagementScore = window.vrPlatform.analyticsCollector.calculateEngagementScore();
+                
+                updateOutput(`📊 SESSION SUMMARY:\n` +
+                           `• Duration: ${Math.round(summary.duration/1000)}s\n` +
+                           `• Events: ${summary.totalEvents}\n` +
+                           `• Interactions: ${summary.totalInteractions}\n` +
+                           `• Average FPS: ${summary.averageFPS}\n` +
+                           `• VR Used: ${summary.vrModeUsed}\n` +
+                           `• Engagement Score: ${engagementScore}%\n` +
+                           `• Platform: ${summary.sessionData.platform}`);
+            }
+        }
+        
+        function exportAnalyticsData() {
+            if (window.vrPlatform && window.vrPlatform.analyticsCollector) {
+                const data = window.vrPlatform.analyticsCollector.exportData();
+                
+                // Create downloadable file
+                const dataStr = JSON.stringify(data, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `vr_analytics_${data.sessionSummary.sessionId}.json`;
+                link.click();
+                
+                updateOutput('📁 Analytics data exported successfully');
+            }
+        }
+        
+        function showRecommendations() {
+            if (window.vrPlatform && window.vrPlatform.analyticsCollector) {
+                const recommendations = window.vrPlatform.analyticsCollector.getRecommendations();
+                
+                updateOutput(`💡 RECOMMENDATIONS:\n` + 
+                           recommendations.map((rec, i) => `${i+1}. ${rec}`).join('\n'));
+            }
+        }
+        
+        function clearAnalytics() {
+            localStorage.removeItem('vr_analytics_events');
+            localStorage.removeItem('vr_session_final_data');
+            updateOutput('🗑️ Analytics data cleared');
+        }
+        
+        function updateOutput(message) {
+            const output = document.getElementById('analytics-output');
+            const timestamp = new Date().toLocaleTimeString();
+            output.innerHTML += `[${timestamp}] ${message}\n\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // Auto-update session info every 10 seconds
+        setInterval(() => {
+            if (window.vrPlatform && window.vrPlatform.analyticsCollector) {
+                const summary = window.vrPlatform.analyticsCollector.getSessionSummary();
+                document.title = `VR Analytics - ${Math.round(summary.duration/1000)}s - ${summary.totalInteractions} interactions`;
+            }
+        }, 10000);
+    </script>
+</body>
+</html>
