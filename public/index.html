@@ -4,21 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VR Analytics Platform</title>
-    <meta name="description" content="Real-time analytics for virtual reality experiences">
-    
-    <!-- Open Graph meta tags -->
-    <meta property="og:title" content="VR Analytics Platform">
-    <meta property="og:description" content="Real-time analytics for virtual reality experiences">
-    <meta property="og:type" content="website">
-    
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: #000;
-            color: #fff;
+            background-color: #000;
             font-family: Arial, sans-serif;
             overflow: hidden;
+        }
+        
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 14px;
+            background: rgba(0,0,0,0.7);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000;
         }
         
         #loading {
@@ -26,64 +30,50 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            text-align: center;
+            color: white;
+            font-size: 18px;
             z-index: 1000;
-        }
-        
-        #info {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        
-        #fps-counter {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 5px 10px;
-            border-radius: 3px;
-            font-family: monospace;
-            font-size: 12px;
-        }
-        
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 3px solid #fff;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div id="loading">
-        <div class="spinner"></div>
-        <p>Loading VR Analytics Platform...</p>
-    </div>
-    
     <div id="info">
-        <h3>VR Analytics Platform</h3>
-        <p>🎯 Click and drag to look around</p>
-        <p>🥽 Click "Enter VR" for immersive mode</p>
-        <p>📊 Analytics tracking active</p>
+        <strong>VR Analytics Platform</strong><br>
+        Click and drag to look around<br>
+        Click objects to interact<br>
+        <div id="fps">FPS: --</div>
     </div>
     
-    <div id="fps-counter">FPS: --</div>
+    <div id="loading">Loading VR Environment...</div>
     
     <script src="bundle.js"></script>
+    
+    <script>
+        // Simple FPS counter
+        let lastTime = performance.now();
+        let frameCount = 0;
+        
+        function updateFPS() {
+            frameCount++;
+            const currentTime = performance.now();
+            
+            if (currentTime >= lastTime + 1000) {
+                const fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
+                document.getElementById('fps').textContent = `FPS: ${fps}`;
+                frameCount = 0;
+                lastTime = currentTime;
+            }
+            
+            requestAnimationFrame(updateFPS);
+        }
+        
+        updateFPS();
+        
+        // Hide loading screen after 3 seconds
+        setTimeout(() => {
+            const loading = document.getElementById('loading');
+            if (loading) loading.style.display = 'none';
+        }, 3000);
+    </script>
 </body>
 </html>
